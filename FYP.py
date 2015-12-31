@@ -49,3 +49,4 @@ class GUI:
 	root.mainloop()
 
 GUI
+#wat
