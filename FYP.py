@@ -5,7 +5,7 @@ import pydoc
 
 root = Tk()#this stays as Tk
 root.title("My Window One")#the title OBVIOUSLY
-root.geometry("200x100")#window size
+root.geometry("700x500")#window size
 
 
 class FileHandling:
@@ -32,7 +32,7 @@ class GUI:
 	def newWindow():
 		NewWin = Toplevel(root)
 		NewWin.title("Results")
-		NewWin.geometry("200x200")
+		NewWin.geometry("500x500")
 		FileHandling
 		myFile = open('newFile.txt')
 		data = myFile.read()
@@ -42,7 +42,17 @@ class GUI:
 	app = Frame(root)
 	app.grid()
 	button1 = Button(app, text = "Acrostics LHS", command = newWindow)
-	button1.grid()
+	button1.pack(side="right", padx = 20, pady=20)
+	button2 = Button(app, text="dummy")
+	button2.pack(side="right", padx = 10, pady = 10)
+	button3 = Button(app, text = "dummy2")
+	button3.pack(side="right", padx = 20, pady=20)
+	button4 = Button(app, text="dummy3")
+	button4.pack(side="right", padx = 20, pady = 20)
+
+	entry = Text(root).grid()
+
+
 
 	
 
