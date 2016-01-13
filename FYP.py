@@ -1,62 +1,68 @@
-#reading in the first word of a line. Works A-OK
-from tkinter import *
-from tkinter import messagebox
-import pydoc 
+from tkinter import *#
+import nltk
 
 root = Tk()#this stays as Tk
-root.title("My Window One")#the title OBVIOUSLY
+root.title("Text Decoder")#the title OBVIOUSLY
 root.geometry("700x500")#window size
 
+input = StringVar()
 
-class FileHandling:
-	with open('text.txt') as file_text:#opens pre-existing text file
-		my_list = [line.split(None, 1)[0] for line in file_text]#splits out the FIRST word.
-		#print (my_list)#prints list
-		with open("newFile.txt", 'w') as f:
-			for item in my_list:
-				f.write("%s " % item)#adds list items one by one into a line.
-	file_text.close()#closes file
+class sampleText: 
+	def readSampleText():
+		start_of_line = []
+		end_of_line = []
+		with open('text.txt') as file_text:
+			fileLines = file_text.read()
+			words = fileLines.split(".")#splits the file by full stop
+			for i in range(len(words)):
+				start_of_line.append(words[i].split()[:1])
+				#my_list.append(words[i])
+			for i in range(len(words)):
+				end_of_line.append(words[i].split()[-1:])
 
+			Label(root, text = fileLines, justify = "left").pack(side = "left")
+			Label(root, text = start_of_line, wraplength = 300, justify  = "left"). pack(side="right")
+			Label(root, text = end_of_line, wraplength = 300, justify = "left").pack(side = "right")
+		file_text.close()
 
-class EndofLine:
-	with open('text.txt') as file_text:
-		my_list = [line.rsplit(None, 1)[-1] for line in file_text]#splits the line ONCE ONLY and starts at the end of line
-		#print (my_list)
-		with open("newFileEND.txt", 'w') as f:
-			for item in my_list:
-				f.write("%s " % item)
-	file_text.close()
+class acrostics():
+	
+	def user_input():
+		text = GUI.entry.get(1.0, END)
+		print(text)
+	def start_of_sentence():
+		for i in range(len(words)):
+				start_of_line.append(words[i].split()[:1])
+	def end_of_line():
+		for i in range(len(words)):
+				end_of_line.append(words[i].split()[-1:])
 
 class GUI:
-	
-	def newWindow():
-		NewWin = Toplevel(root)
-		NewWin.title("Results")
-		NewWin.geometry("500x500")
-		FileHandling
-		myFile = open('newFile.txt')
-		data = myFile.read()
-		Results = Label(NewWin, text = data)
-		Results.grid(row=1, column=1)
 
 	app = Frame(root)
-	app.grid()
-	button1 = Button(app, text = "Acrostics LHS", command = newWindow)
-	button1.pack(side="right", padx = 20, pady=20)
-	button2 = Button(app, text="dummy")
-	button2.pack(side="right", padx = 10, pady = 10)
-	button3 = Button(app, text = "dummy2")
-	button3.pack(side="right", padx = 20, pady=20)
-	button4 = Button(app, text="dummy3")
-	button4.pack(side="right", padx = 20, pady = 20)
+	app.pack()
 
-	entry = Text(root).grid()
+	instructions = Label(root, text = "Type in your text to be decoded or try a sample text").pack(side = "top")
 
+	entry = Text(root, height = 5).pack()
 
+	def retrieve_input():
+		text = entry.get(1.0, END)
+		Label(root, text = text).pack(side = "top")
 
 	
+	acrosticsb = Button(app, text = "Acrostics", command = acrostics.user_input).pack(side = "left", padx = 10, pady = 10)
+	numeralsb = Button(app, text="Numerals").pack(side = "left", padx = 10, pady = 10)
+	ratiosb = Button(app, text = "Ratios").pack(side = "left", padx = 10, pady = 10)
+	sampletextb = Button(app, text = "Sample", command = sampleText.readSampleText).pack(side = "right", padx = 50, pady = 10)
 
+	display = Button(app, text = "display", command = retrieve_input).pack()
+
+	
+	
+	#user = entry.get(1.0, END)
+	#print(user)
 	root.mainloop()
 
+
 GUI
-#wat
