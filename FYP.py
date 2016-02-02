@@ -42,11 +42,14 @@ class Numerals:
 		with open('text.txt') as file_text:
 			lines = file_text.read()
 			tokens = lines.split()
-			for token in tokens:
-				if token.isdigit():
-					for i in reversed(xrange(token)):
-						nums.append(token)
-		print(i)			
+			for count, token in enumerate(tokens, 1):
+				try:
+					int(token)#check is the token is an integer
+					i = count - int(t)#find the nth word before the index
+					print(ar[i-1])#print i-1 as i starts with 0
+				except:
+					pass#ignore everything else
+				
 			
 
 class App:
