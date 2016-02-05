@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import nltk
+import string
 
 class sampleText: 
 	def readSampleText():
@@ -36,19 +37,45 @@ class acrostics():
 """
 
 class Numerals:
-	
+	numberDictionary = {'one': 1, 'two': 2, 'three': 3, 'four' : 4, 'five' : 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine' :9, 'ten': 10}
+	romanDictionary = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'IX': 9, 'X': 10}
 	def readSampleText():
-		nums = []
+		#start with the nth word before the number shown in text
 		with open('text.txt') as file_text:
 			lines = file_text.read()
 			tokens = lines.split()
 			for count, token in enumerate(tokens, 1):
 				try:
 					int(token)#check is the token is an integer
-					i = count - int(t)#find the nth word before the index
-					print(ar[i-1])#print i-1 as i starts with 0
+					i = count - int(token)#find the nth word before the index
+					print(tokens[i-1])#print i-1 as i starts with 0
 				except:
 					pass#ignore everything else
+		#then print the nth word AFTER the number shown in text
+		with open('text.txt') as file_text:
+			lines = file_text.read()
+			tokens = lines.split()
+			for count, token in enumerate(tokens, 1):
+				try:
+					int(token)#check is the token is an integer
+					i = count + int(token)#find the nth word before the index
+					print(tokens[i-1])#print i-1 as i starts with 0
+				except:
+					pass#ignore everything else
+
+	def readRomanNumerals():
+		with open('romans.txt') as file_text:
+			lines = file_text.read()
+			lines = lines.translate(str.maketrans("","", string.punctuation))
+			tokens = lines.split()
+			for count,token in enumerate(tokens, 1):
+				try:
+					i = count - romanDictionary.get(token)
+					print(tokens[i-1])
+				except:
+					pass
+
+
 				
 			
 
@@ -89,7 +116,7 @@ class App:
 		self.sampletextb = Button(frame, text = "Sample Acrostics", command = sampleText.readSampleText)
 		self.sampletextb.pack(side = 'left', padx = 10, pady = 10)
 
-		self.sampletextb = Button(frame, text = "Sample Numerals", command = Numerals.readSampleText)
+		self.sampletextb = Button(frame, text = "Sample Numerals", command = Numerals.readRomanNumerals)
 		self.sampletextb.pack(side = 'left', padx = 10, pady = 10)
 
 
