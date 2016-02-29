@@ -28,7 +28,6 @@ def rightAcrostics(fileLines):
 	print(end_of_line)
 
 def numerals(fileLines):
-	d = {'one': 1, 'two': 2, 'three': 3, 'four' : 4, 'five' : 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine' :9, 'ten': 10}
 	tokens = fileLines.split()
 	#start with the nth word before the number shown in text
 	for count, token in enumerate(tokens, 1):
@@ -52,34 +51,46 @@ def numerals(fileLines):
 		except:
 			pass
 
-## works from the big number first(i.e. 20, 30), reverse it to add to the main def and work from the small number first then check n-1 position
-##decide whether ti cycle or call end of file ?? If i > total words, display error message, or nothing of value
 def loopingNumerals(tokens):
-	d = {'one': 1, 'two': 2, 'three': 3, 'four' : 4, 'five' : 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine' :9, 'ten': 10}
+	d = {'one': 1, 'two': 2, 'three': 3, 'four' : 4, 'five' : 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine' :9, 'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen':15, 'sixteen': 16, 'seventeen': 17, 'eighteen': 18, 'nineteen': 19}
 	dSpecial = {'twenty':20, 'thirty': 30, 'fourty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70, 'eighty': 80, 'ninety': 90}
-	for count, token in enumerate(tokens, 1):
+	tokenLower = [under.lower() for under in tokens] 
+	for count, token in enumerate(tokenLower, 0):
 		try:
-			if(dSpecial.get(token)):
-				i = count+1
-				if(d.get(tokens[i-1])):
-					n = count + dSpecial.get(token) + d.get(tokens[i-1])
-					print (tokens[n-1])
-				else:
-					k = count + dSpecial.get(token)
-					print (tokens[k-1])
+			if(d.get(token)):
+				i = count - 1	
+				if(dSpecial.get(tokenLower[i])):
+					print(i, dSpecial.get(tokenLower[i]), d.get(token))
+					n = (i + 1) + dSpecial.get(tokenLower[i]) + d.get(token)#should count from the second number as they are technically one
+					if(n > len(tokenLower)):
+						print(str(tokens[-1:]).strip('[]'))
+						print("Ran out of words!")
+					else:
+						print(n)
+						print(str(tokenLower[n]).strip('[]')
 		except: pass
-	
-'''
-	for count, token in enumerate(tokens, 1):
-		try:
-			if(dSpecial.get(token)):
-				if(tokens[token] + 1 == d.get(token)):
-			
-		except:
-			pass
-'''
 
 def main():
 	loopingNumerals(removePunctuation(readFiles()))
 
+
 main()
+
+
+'''
+print (i)
+			if(dSpecial.get(tokens[i-1])):
+				n = count + dSpecial.get(tokens[i-1]) + d.get(token)
+				m = count + dSpecial.get(tokens[i-1]) + d.get(token)
+				if(n > len(tokens)):
+					print("End of file reached.")
+				#else:
+					#print(tokens[n-1])
+					#print(tokens[m-1])
+			else:
+				print("This is " + d.get(token))
+				n = count + d.get(token)#n starts from 0
+				m = count - d.get(token)
+				#print(tokens[n-1])
+				#print(tokens[m-1])
+'''
