@@ -157,12 +157,44 @@ def tothehundreds(tokens):
 		except: pass
 
 #number sequences and series
+def Fibonacci(n):
+	if n == 0: 
+		return 0
+	elif n == 1:
+		return 1
+	else: 
+		return Fibonacci(n-1) + Fibonacci(n - 2)
+
+def prime(c):
+	for i in range(2, int(c) + 1):
+		count = 0
+		for j in range(2, i):
+			if i%j != 0:
+				count += 1
+		if count == i-2:
+			return i
+
+def toList(c):
+	fList = []
+	for i in range(c):
+		fList.append(Fibonacci(i+1))
+	return fList
+
+def fileCheck(fList, fileLines):
+	tokens = fileLines.split()
+	for i in range(len(fList)):
+		fList[i] = fList[i] - 1
+	try:
+		for i in range(len(fList)):
+			print(tokens[fList[i]])
+	except IndexError:
+		print("Array out of bounds!")
 
 def cli():
 	c = '?'
-	while c not in '123':
+	while c not in '1234':
 		try:
-			c  = input("\t Please enter a number corresponding to what you want to do:\n1. Left Acrostics\n2. Right Acrostics\n3. Numerals\n")
+			c  = input("\t Please enter a number corresponding to what you want to do:\n1. Left Acrostics\n2. Right Acrostics\n3. Numerals\n4. Fibonacci\n\tPress ctrl^Z to exit\n")
 		except IndexError:
 			pass
 
@@ -182,10 +214,13 @@ def switch(c):
 			numerals(readFiles())
 			print("-------------------Written Numbers------------------")
 			tothehundreds(removePunctuation(readFiles()))
+		elif c == str(4):
+			cc = int(input("Enter the number of iterations you want to do: "))
+			fileCheck(toList(cc), readFiles())
 		else:
 			print("Choose a number between 1 and 3 or q to quit.")
 	except IndexError:
-		pass
+		print("Available option not choosen")
 
 def main():
 	switch(cli())
