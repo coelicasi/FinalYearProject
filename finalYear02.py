@@ -7,6 +7,10 @@ def readFiles():
 			return fileLines
 	except IOError:
 		print("File could not be read. It either does not exist or does not have read access")
+
+def printTextFile(fileLines):
+	print(fileLines)
+
 #punctuation
 def removePunctuation(fileLines):
 	hypenSplit = fileLines.replace('-', ' ')
@@ -166,13 +170,15 @@ def Fibonacci(n):
 		return Fibonacci(n-1) + Fibonacci(n - 2)
 
 def prime(c):
-	for i in range(2, int(c) + 1):
+	primeList = []
+	for i in range(1, int(c)+1):
 		count = 0
 		for j in range(2, i):
 			if i%j != 0:
 				count += 1
 		if count == i-2:
-			return i
+			primeList.append(i)
+	return primeList
 
 def toList(c):
 	fList = []
@@ -190,11 +196,21 @@ def fileCheck(fList, fileLines):
 	except IndexError:
 		print("Array out of bounds!")
 
+def primeCheck(primeList, fileLines):
+	tokens = fileLines.split()
+	for i in range(len(primeList)):
+		primeList[i] = primeList[i] - 1
+	try:
+		for i in range(len(primeList)):
+			print(tokens[primeList[i]])
+	except IndexError:
+		print("Array out of bounds!")
+
 def cli():
 	c = '?'
-	while c not in '1234':
+	while c not in '012345':
 		try:
-			c  = input("\t Please enter a number corresponding to what you want to do:\n1. Left Acrostics\n2. Right Acrostics\n3. Numerals\n4. Fibonacci\n\tPress ctrl^Z to exit\n")
+			c  = input("\t Please enter a number corresponding to what you want to do:\n0. View sample Text\n1. Left Acrostics\n2. Right Acrostics\n3. Numerals\n4. Fibonacci\n5. Prime Numbers\n\tPress ctrl^Z to exit\n")
 		except IndexError:
 			pass
 
@@ -203,6 +219,9 @@ def cli():
 def switch(c):
 	#print(isinstance(c, str))
 	try: 
+		if c == str(0):
+			print("-------------------Sample Text File-------------------")
+			printTextFile(readFiles())
 		if c == str(1):
 			print("-------------------Left Acrostics-------------------")
 			leftAcrostics(readFiles())
@@ -215,10 +234,13 @@ def switch(c):
 			print("-------------------Written Numbers------------------")
 			tothehundreds(removePunctuation(readFiles()))
 		elif c == str(4):
+			print("-------------------The Fibonacci Sequence------------------")
 			cc = int(input("Enter the number of iterations you want to do: "))
 			fileCheck(toList(cc), readFiles())
-		else:
-			print("Choose a number between 1 and 3 or q to quit.")
+		elif c == str(5):
+			print("-------------------Prime Numbers------------------")
+			cc = int(input("Enter the limit of prime numbers you want: "))#
+			primeCheck(prime(cc), readFiles())
 	except IndexError:
 		print("Available option not choosen")
 

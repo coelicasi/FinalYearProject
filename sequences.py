@@ -7,16 +7,26 @@ def readFiles():
 		print("File could not be read. It either does not exist or does not have read access")
 
 def prime(c):
-	for i in range(1, int(c) + 1):
+	primeList = []
+	for i in range(1, int(c)+1):
 		count = 0
 		for j in range(2, i):
 			if i%j != 0:
 				count += 1
 		if count == i-2:
-			return i
+			primeList.append(i)
+	return primeList
 
-def toList(primeNumber):
-	
+def toPrint(primeList, fileLines):
+	tokens = fileLines.split()
+	for i in range(len(primeList)):
+		primeList[i] = primeList[i] - 1
+	try:
+		for i in range(len(primeList)):
+			print(tokens[primeList[i]])
+	except IndexError:
+		print("Array out of bounds!")
+			
 
 def cli():
 	c = int(input("Enter the number of iterations you want to do: "))
@@ -24,7 +34,7 @@ def cli():
 	
 
 def main():
-	toList(prime(cli()))
+	toPrint(prime(cli()), readFiles())
 
 main()
 
