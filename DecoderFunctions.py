@@ -4,7 +4,7 @@ import string
 # read in file
 def readFiles():
     try:
-        with open('text.txt') as file_text:  # reading in a file
+        with open('C:\\Users\\Alexandra\\Documents\\College\\FinalYearProject\\FinalYearProject\\text.txt') as file_text:  # reading in a file
             fileLines = file_text.read()  # read method
             return fileLines
     except IOError:
@@ -29,7 +29,7 @@ def leftAcrostics(fileLines):
     start_of_line = []
     for i in range(len(tokens)):
         start_of_line.append(tokens[i].split()[:1])
-    print(str(start_of_line).replace('[', '').replace(']', ''))
+    return(str(start_of_line).replace('[', '').replace(']', ''))
 
 
 def rightAcrostics(fileLines):
@@ -37,22 +37,24 @@ def rightAcrostics(fileLines):
     end_of_line = []
     for i in range(len(tokens)):
         end_of_line.append(tokens[i].split()[-1:])
-    print(str(end_of_line).replace('[', '').replace(']', ''))
+    return(str(end_of_line).replace('[', '').replace(']', ''))
 
 
 ##all numerals
 def numerals(fileLines):
+    numList = []
     tokens = fileLines.split()
     # start with the nth word before the number shown in text
     for count, token in enumerate(tokens, 1):
         try:
             int(token)  # check is the token is an integer
             i = count - int(token)  # find the nth word before the index
-            print(token + " places before " + token + ": " + tokens[i - 1])
+            numList.append(tokens[i])
             n = count + int(token)  # find the nth word before the index
-            print(token + " places after " + token + ": " + tokens[n - 1])
+            numList.append(tokens[n])
         except:
             pass
+    return(numList)
 
 def tothehundreds(tokens):
     d = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
@@ -60,6 +62,7 @@ def tothehundreds(tokens):
          'eighteen': 18, 'nineteen': 19}
     dSpecial = {'twenty': 20, 'thirty': 30, 'fourty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70, 'eighty': 80,
                 'ninety': 90, 'hundred': 100}
+    hundList = []
     tokenLower = [under.lower() for under in tokens]
 
     # for count, token in enumerate(tokenLower, 0):
@@ -84,8 +87,8 @@ def tothehundreds(tokens):
                                 if (after > len(tokenLower)):
                                     print("Significant number ", total, " too large for text document.")
                                 else:
-                                    print(total, " words after: ", tokenLower[after])
-                                    print(total, " words before: ", tokenLower[prev])
+                                    hundList.append(tokenLower[after])
+                                    hundList.append(tokenLower[prev])
                                 break
                             else:  # no single int after a double int
                                 total = dSpecial.get(tokenLower[j]) + (dSpecial.get(token) * d.get(tokenLower[i]))
@@ -95,8 +98,8 @@ def tothehundreds(tokens):
                                 if (after > len(tokenLower)):
                                     print("Significant number ", total, " too large for text document.")
                                 else:
-                                    print(total, " words after: ", tokenLower[after])
-                                    print(total, " words before: ", tokenLower[prev])
+                                    hundList.append(tokenLower[after])
+                                    hundList.append(tokenLower[prev])
                                 break
                         elif (d.get(tokenLower[j])):  # a single int after 100
                             total = d.get(tokenLower[j]) + (dSpecial.get(token) * d.get(tokenLower[i]))
@@ -106,8 +109,8 @@ def tothehundreds(tokens):
                             if (after > len(tokenLower)):
                                 print("Significant number ", total, " too large for text document.")
                             else:
-                                print(total, " words after: ", tokenLower[after])
-                                print(total, " words before: ", tokenLower[prev])
+                                hundList.append(tokenLower[after])
+                                hundList.append(tokenLower[prev])
                             break
 
                         else:  # nothing after 100
@@ -118,8 +121,8 @@ def tothehundreds(tokens):
                             if (after > len(tokenLower)):
                                 print("Significant number ", total, " too large for text document.")
                             else:
-                                print(total, " words after: ", tokenLower[after])
-                                print(total, " words before: ", tokenLower[prev])
+                                hundList.append(tokenLower[after])
+                                hundList.append(tokenLower[prev])
                             break
                     else:  # if there is no and concactinating numbers, i.e. thirty-six, four
                         break
@@ -131,8 +134,8 @@ def tothehundreds(tokens):
                     if (after > len(tokenLower)):
                         print("Significant number ", total, " too large for text document.")
                     else:
-                        print(total, " words after: ", tokenLower[after])
-                        print(total, " words before: ", tokenLower[prev])
+                        hundList.append(tokenLower[after])
+                        hundList.append(tokenLower[prev])
                     break
                 else:  # no previous number, i.e. a hundred
                     total = dSpecial.get(token)
@@ -142,8 +145,8 @@ def tothehundreds(tokens):
                     if (after > len(tokenLower)):
                         print("Significant number ", total, " too large for text document.")
                     else:
-                        print(total, " words after: ", tokenLower[after])
-                        print(total, " words before: ", tokenLower[prev])
+                        hundList.append(tokenLower[after])
+                        hundList.append(tokenLower[prev])
                     break
 
             elif (d.get(token)):
@@ -154,12 +157,14 @@ def tothehundreds(tokens):
                 if (after > len(tokenLower)):
                     print("Significant number ", total, " too large for text document.")
                 else:
-                    print(total, " words after: ", tokenLower[after])
-                    print(total, " words before: ", tokenLower[prev])
+                    hundList.append(tokenLower[after])
+                    hundList.append(tokenLower[prev])
                 break
 
         except:
             pass
+
+    return(hundList)
 
 
 # number sequences and series
@@ -184,79 +189,36 @@ def prime(c):
     return primeList
 
 
-def toList(c):
+def fibList(c):
     fList = []
     for i in range(c):
         fList.append(Fibonacci(i + 1))
     return fList
 
 
-def fileCheck(fList, fileLines):
+def fibCheck(fList, fileLines):
+    fibArray = []
     tokens = fileLines.split()
     for i in range(len(fList)):
         fList[i] = fList[i] - 1
     try:
         for i in range(len(fList)):
-            print(tokens[fList[i]])
+            fibArray.append(tokens[fList[i]])
     except IndexError:
         print("Array out of bounds!")
 
+    return(fibArray)
+
 
 def primeCheck(primeList, fileLines):
+    priList = []
     tokens = fileLines.split()
     for i in range(len(primeList)):
         primeList[i] = primeList[i] - 1
     try:
         for i in range(len(primeList)):
-            print(tokens[primeList[i]])
+            priList.append(tokens[primeList[i]])
     except IndexError:
         print("Array out of bounds!")
-'''
 
-def cli():
-    c = '?'
-    while c not in '012345':
-        try:
-            c = input(
-                "\t Please enter a number corresponding to what you want to do:\n0. View sample Text\n1. Left Acrostics\n2. Right Acrostics\n3. Numerals\n4. Fibonacci\n5. Prime Numbers\n\tPress ctrl^Z to exit\n")
-        except IndexError:
-            pass
-
-    return c
-
-
-def switch(c):
-    # print(isinstance(c, str))
-    try:
-        if c == str(0):
-            print("-------------------Sample Text File-------------------")
-            printTextFile(readFiles())
-        if c == str(1):
-            print("-------------------Left Acrostics-------------------")
-            leftAcrostics(readFiles())
-        elif c == str(2):
-            print("-------------------Right Acrostics------------------")
-            rightAcrostics(readFiles())
-        elif c == str(3):
-            print("------------------- Integers------------------")
-            numerals(readFiles())
-            print("-------------------Written Numbers------------------")
-            tothehundreds(removePunctuation(readFiles()))
-        elif c == str(4):
-            print("-------------------The Fibonacci Sequence------------------")
-            cc = int(input("Enter the number of iterations you want to do: "))
-            fileCheck(toList(cc), readFiles())
-        elif c == str(5):
-            print("-------------------Prime Numbers------------------")
-            cc = int(input("Enter the limit of prime numbers you want: "))  #
-            primeCheck(prime(cc), readFiles())
-    except IndexError:
-        print("Available option not choosen")
-
-
-def main():
-    switch(cli())
-
-
-main()
-'''
+    return(priList)
