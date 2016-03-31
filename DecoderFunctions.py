@@ -56,116 +56,47 @@ def numerals(fileLines):
             pass
     return(numList)
 
-def tothehundreds(tokens):
+def tothehundreds(tokens, newlines):
     d = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
          'eleven': 11, 'twelve': 12, 'thirteen': 13, 'fourteen': 14, 'fifteen': 15, 'sixteen': 16, 'seventeen': 17,
          'eighteen': 18, 'nineteen': 19}
     dSpecial = {'twenty': 20, 'thirty': 30, 'fourty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70, 'eighty': 80,
                 'ninety': 90, 'hundred': 100}
-    hundList = []
+    num = 0
     tokenLower = [under.lower() for under in tokens]
 
-    # for count, token in enumerate(tokenLower, 0):
-    # print(count, token)
+    print("Final number: ")
 
-    for count, token in enumerate(tokenLower, 0):
-        try:
-            if (dSpecial.get(token)):
-                i = count - 1
-                k = count + 1
-                if (d.get(tokenLower[i])):
-                    if (tokenLower[k] == 'and'):
-                        j = k + 1
-                        if (dSpecial.get(tokenLower[j])):  # a double int after 100
-                            l = j + 1
-                            if (d.get(tokenLower[l])):  # a single int after a double int
-                                total = d.get(tokenLower[l]) + dSpecial.get(tokenLower[j]) + (
-                                dSpecial.get(token) * d.get(tokenLower[i]))
-                                finalCount = l
-                                after = finalCount + total
-                                prev = finalCount - total
-                                if (after > len(tokenLower)):
-                                    print("Significant number ", total, " too large for text document.")
-                                else:
-                                    hundList.append(tokenLower[after])
-                                    hundList.append(tokenLower[prev])
-                                break
-                            else:  # no single int after a double int
-                                total = dSpecial.get(tokenLower[j]) + (dSpecial.get(token) * d.get(tokenLower[i]))
-                                finalCount = l
-                                after = finalCount + total
-                                prev = finalCount - total
-                                if (after > len(tokenLower)):
-                                    print("Significant number ", total, " too large for text document.")
-                                else:
-                                    hundList.append(tokenLower[after])
-                                    hundList.append(tokenLower[prev])
-                                break
-                        elif (d.get(tokenLower[j])):  # a single int after 100
-                            total = d.get(tokenLower[j]) + (dSpecial.get(token) * d.get(tokenLower[i]))
-                            finalCount = j
-                            after = finalCount + total
-                            prev = finalCount - total
-                            if (after > len(tokenLower)):
-                                print("Significant number ", total, " too large for text document.")
-                            else:
-                                hundList.append(tokenLower[after])
-                                hundList.append(tokenLower[prev])
-                            break
-
-                        else:  # nothing after 100
-                            total = (dSpecial.get(token) * d.get(tokenLower[i]))
-                            finalCount = k
-                            after = finalCount + total
-                            prev = finalCount - total
-                            if (after > len(tokenLower)):
-                                print("Significant number ", total, " too large for text document.")
-                            else:
-                                hundList.append(tokenLower[after])
-                                hundList.append(tokenLower[prev])
-                            break
-                    else:  # if there is no and concactinating numbers, i.e. thirty-six, four
-                        break
-                elif (d.get(tokenLower[k])):  # single int after double int
-                    total = dSpecial.get(token) + d.get(tokenLower[k])
-                    finalCount = k
-                    after = finalCount + total
-                    prev = finalCount - total
-                    if (after > len(tokenLower)):
-                        print("Significant number ", total, " too large for text document.")
+    for token in range(len(tokenLower)):
+        if d.get(tokenLower[token]):
+            if dSpecial.get(tokenLower[token+1]):
+                if tokenLower[token + 2] == "and":
+                    if d.get(tokenLower[token+3]):
+                        num = d.get(tokenLower[token+3]) + (d.get(tokenLower[token]) * dSpecial.get(tokenLower[token+1]))
+                        return num
+                    elif dSpecial.get(tokenLower[token+3]):
+                        if d.get(tokenLower[token+4]):
+                            num = d.get(tokenLower[token+4]) + dSpecial.get(tokenLower[token+3]) + (d.get(tokenLower[token]) * dSpecial.get(tokenLower[token+1]))
+                            return num
+                        else:
+                            num = dSpecial.get(tokenLower[token+3]) + (d.get(tokenLower[token]) * dSpecial.get(tokenLower[token+1]))
+                            return num
                     else:
-                        hundList.append(tokenLower[after])
-                        hundList.append(tokenLower[prev])
-                    break
-                else:  # no previous number, i.e. a hundred
-                    total = dSpecial.get(token)
-                    finalCount = count
-                    after = finalCount + total
-                    prev = finalCount - total
-                    if (after > len(tokenLower)):
-                        print("Significant number ", total, " too large for text document.")
-                    else:
-                        hundList.append(tokenLower[after])
-                        hundList.append(tokenLower[prev])
-                    break
-
-            elif (d.get(token)):
-                total = d.get(token)
-                finalCount = count
-                after = finalCount + total
-                prev = finalCount - total
-                if (after > len(tokenLower)):
-                    print("Significant number ", total, " too large for text document.")
+                        num = d.get(tokenLower[token]) * dSpecial.get(tokenLower[token+1])
+                        return num
                 else:
-                    hundList.append(tokenLower[after])
-                    hundList.append(tokenLower[prev])
-                break
+                    num = d.get(tokenLower[token]) * dSpecial.get(tokenLower[token+1])
+                    return num
+            elif dSpecial.get(tokenLower[token-1]):
+                num = dSpecial.get(tokenLower[token-1]) + d.get(tokenLower[token])
+                return num
+            else:
+                num = d.get(tokenLower[token])
+                return num
+        else: pass
 
-        except:
-            pass
-
-    return(hundList)
-
+def printNum(num):
+    print(num)
 
 # number sequences and series
 def Fibonacci(n):
