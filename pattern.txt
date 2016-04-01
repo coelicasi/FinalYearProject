@@ -2,5 +2,5 @@ When it comes to creating data, one must first think carefully.
 At what point do I decide to add my secret message and will it ruin
 my whole script? Can I think first of my patterns and noise, 
 or first of my message and data. How long do I make it? Is that
-up to me or up to the receiver? What numbers mean the most? Eight? Three?
+up to me or up to the receiver? What numbers mean the most? Eight? 3?
 Fuck it, I'm going home.
