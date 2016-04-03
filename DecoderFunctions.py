@@ -1,22 +1,24 @@
 import string
 from word2number import w2n
 
-##probably bad coding practice, set returns, populate later?
-
+#function to open specific text file
 def readFiles():
-    try:
+    try:##chnage to a variable for different sample texts
         with open('C:\\Users\\Alexandra\\Documents\\College\\FinalYearProject\\FinalYearProject\\codedmessage_1.txt') as file_text:  # reading in a file
+        #with open(user_text_input) as file_text:
             fileLines = file_text.read()  # read method
             return fileLines
     except IOError:
         print("File could not be read. It either does not exist or does not have read access")
 
+#gets the characters of the text doc into a list
 def charactertext(fileLines):
     remove_n = ''.join([x.rstrip("\n") for x in fileLines])
     lines = remove_n.translate(str.maketrans("", "", string.punctuation)).replace(" ", "").strip()
     characters = list(lines)
     return characters
 
+#reverse the string of the text doc into a list
 def reversetext(fileLines):
     reverse_text = []
     remove_n = ''.join([x.rstrip("\n") for x in fileLines])
@@ -25,13 +27,14 @@ def reversetext(fileLines):
         reverse_text.append(textlines[i])
     return reverse_text
 
+#reverses the characters of the text doc into a list
 def reversechar(characters):
     reverse_characters = []
     for i in range(len(characters)-1, -1, -1):
         reverse_characters.append(characters[i])
     return reverse_characters
 
-
+#changes all written numbers to digits
 def convertNumbers(fileLines):
     #because of word2number being in early stages of dev, support for python 2.x only, partially works for python 3.x
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split(" ")
@@ -46,8 +49,7 @@ def convertNumbers(fileLines):
 
     return numwordlist
 
-#finds digits in
-
+#takes in the written num list and searches for integers, adds all to a list
 def numbers(fileLines, numwordlist):
     index = []
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
@@ -65,12 +67,13 @@ def numbers(fileLines, numwordlist):
 
     return index
 
-#second paragraph == second line, different resultS?
-def numerals(fileLines, reverse_text):
+#finds the digits in a text doc and returns a list
+def numerals(fileLines, reverse_text, characters , reverse_characters):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
     paragraphs = fileLines.split(("\n"))
     sentences = fileLines.replace("?", ".").replace("!", ".").split(".")#? and ! count as change of sentence
     wordList = []
+    charlist = []
 
     # n words before and after the number
     for count, token in enumerate(textlines, 1):
@@ -101,14 +104,6 @@ def numerals(fileLines, reverse_text):
             wordList.append(paragraphs[int(textlines[token])-1].split()[:1][0])
         except: pass
 
-    return wordList
-
-def char_numerals(fileLines, characters , reverse_characters):
-    textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
-    paragraphs = fileLines.split("\n")
-    sentences = fileLines.replace("?", ".").replace("!", ".").split(".")
-    charlist = []
-
     for count, token in enumerate(characters, 1):
         try:
             i = count - int(token)  # find the nth word before the index
@@ -122,25 +117,24 @@ def char_numerals(fileLines, characters , reverse_characters):
     for token in range(len(textlines)):
         try:
             charlist.append(characters[int(textlines[token]) - 1])  # START
-            charlist.append(reverse_characters[int(textlines[token])-1])  # END
+            charlist.append(reverse_characters[int(textlines[token]) - 1])  # END
         except:
             pass
-        #first char of the nth sentence
+        # first char of the nth sentence
         try:
             charlist.append(sentences[int(textlines[token]) - 1].split()[0][0])
         except:
             pass
-        #first char of the nth paragraph
+        # first char of the nth paragraph
         try:
             charlist.append(paragraphs[int(textlines[token]) - 1].split()[0][0])
         except:
             pass
 
-    return charlist
+    return wordList, charlist
 
-
-
-def byWord(numwordlist, fileLines, reverse_text):
+#iterates over thr text doc and finds words corresponding to numbers
+def byWord(numwordlist, fileLines, reverse_text, characters , reverse_characters,):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
     paragraphs = fileLines.split(("\n"))
     sentences = fileLines.replace("?", ".").replace("!", ".").split(".")
@@ -162,12 +156,6 @@ def byWord(numwordlist, fileLines, reverse_text):
         except:
             pass
 
-    return byWord_wordlist
-
-def byWord_characters(fileLines, characters , reverse_characters, numwordlist):
-    textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
-    paragraphs = fileLines.split(("\n"))
-    sentences = fileLines.replace("?", ".").replace("!", ".").split(".")
     byWord_charlist = []
 
     for i in range(len(numwordlist)):
@@ -189,9 +177,9 @@ def byWord_characters(fileLines, characters , reverse_characters, numwordlist):
         except:
             pass
 
-    return byWord_charlist
+    return byWord_wordlist, byWord_charlist
 
-
+#find the left most word and characters, returns a list of each
 def leftAcrostics(fileLines):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split("\n")
     leftAcro_word = []
@@ -208,6 +196,7 @@ def leftAcrostics(fileLines):
 
     return leftAcro_word, leftAcro_char
 
+#finds the right most word and character, returns list of each
 def rightAcrostics(fileLines):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split("\n")
     rightAcro_word = []
@@ -223,6 +212,7 @@ def rightAcrostics(fileLines):
 
     return rightAcro_word, rightAcro_char
 
+#generates the Fibonacci sequence some n number of times
 def Fibonacci(n):
     if n == 0:
         return 0
@@ -231,6 +221,7 @@ def Fibonacci(n):
     else:
         return Fibonacci(n - 1) + Fibonacci(n - 2)
 
+#generates a series of prime numbers up to c
 def prime(c):
     primeList = []
     for i in range(1, int(c) + 1):
@@ -242,19 +233,21 @@ def prime(c):
             primeList.append(i)
     return primeList
 
+#creates the list of Fibonacci numbers and returns it
 def fibList(c):
     fList = []
     for i in range(c):
         fList.append(Fibonacci(i + 1))
     return fList
 
+#searches for the words and characters corresponding to the sequence
 def fibCheck(fList, fileLines, characters):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
     fibArray = []
     fibchararry = []
     for i in range(len(fList)):
         fList[i] = fList[i] - 1
-    try:
+    try:#a safety net for when the text doc is not long enough to cover the sequence
         for i in range(len(fList)):
             fibArray.append(textlines[fList[i]])
     except IndexError:
@@ -268,6 +261,7 @@ def fibCheck(fList, fileLines, characters):
 
     return fibArray, fibchararry
 
+#searches for the words and characters corresponding to the sequence
 def primeCheck(primeList, fileLines, characters):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
     prichararray = []
@@ -288,14 +282,23 @@ def primeCheck(primeList, fileLines, characters):
 
     return priList, prichararray
 
-def crossdiscovery(fList, fileLines, index):
+#finds if a number in the text doc correpsonds to a Fibonacci number, returns the Fibonacci word
+#finds if a number in the text doc correpsonds to a prime number, returns the prime word
+def crossdiscovery(fList,priList, fileLines, index):
     textlines = fileLines.translate(str.maketrans("", "", string.punctuation)).split()
     cross = list(set(fList).intersection(index))
+    cross_prime = list(set(priList).intersection(index))
     crossed_list = []
+    crossed_prime_list = []
+
     for i in range(len(cross)):
         crossed_list.append(textlines[cross[i] - 1])
 
-    return crossed_list
+    for i in range(len(cross_prime)):
+        crossed_prime_list.append(textlines[cross_prime[i] - 1])
+
+
+    return crossed_list, crossed_prime_list
 
 def usersearch():
     user_input = input("Number of iterations for Fibonacci: ")
